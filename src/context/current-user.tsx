@@ -13,7 +13,11 @@ const CurrentUserContext = createContext<CurrentUserContextType | undefined>(und
 
 export function CurrentUserProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
-  const { isLoading, data: currentUser, error } = useQuery({
+  const {
+    error,
+    isLoading,
+    data: currentUser,
+  } = useQuery({
     queryFn: getMe,
     queryKey: ['getMe'],
   });
