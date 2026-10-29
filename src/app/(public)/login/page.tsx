@@ -47,7 +47,7 @@ export default function LoginPage() {
       onError: (err) => toast.error(err.message),
       onSuccess: () => {
         form.reset();
-        window.location.href = searchParams.get('redirect') || '/';
+        window.location.href = searchParams.get('redirect') || '/home';
       },
     });
   };
