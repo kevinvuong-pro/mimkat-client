@@ -18,6 +18,7 @@ coverage
 .env.test.local
 .env.production.local
 .env.development.local
+self-host/.env.production
 
 # Logs
 logs

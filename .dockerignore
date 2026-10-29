@@ -1,0 +1,10 @@
+out
+.env
+.git
+*.log
+.next
+.env.*
+coverage
+.gitignore
+node_modules
+!.env.example
