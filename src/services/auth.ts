@@ -1,6 +1,5 @@
 import {
   LoginRequest,
-  LogoutRequest,
   LoginResponse,
   LogoutResponse,
   RegisterRequest,
@@ -31,7 +30,7 @@ const login = async (data: LoginRequest) => {
   }
 };
 
-const logout = async (_data?: LogoutRequest) => {
+const logout = async () => {
   try {
     const endpoint = '/auth/logout';
 

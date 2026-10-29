@@ -116,7 +116,12 @@ export default function Home() {
         </div>
 
         <div className="border-t pt-4">
-          <Button onClick={mutate} className="w-full" disabled={isPending} variant="destructive">
+          <Button
+            className="w-full"
+            disabled={isPending}
+            variant="destructive"
+            onClick={() => mutate()}
+          >
             {isPending ? (
               <Loader2 className="h-4 w-4 animate-spin" />
             ) : (

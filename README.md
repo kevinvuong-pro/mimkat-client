@@ -86,7 +86,7 @@ mimkat-client/
 
 ### Core
 
-- **Next.js 15** - React Framework
+- **Next.js 16** - React Framework
 - **React 19** - UI Library
 - **TypeScript** - Type Safety
 
@@ -133,8 +133,9 @@ Routes under `(private)` folder require authentication.
 
 All API calls are centralized in `src/services/`:
 
-- `auth.service.ts` - Authentication endpoints
-- `users.service.ts` - User management endpoints
+- `auth.ts` - Authentication endpoints
+- `users.ts` - User management endpoints
+- `sessions.ts` - Session management endpoints
 
 ### Error Handling
 

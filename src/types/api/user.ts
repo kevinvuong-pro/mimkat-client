@@ -1,8 +1,6 @@
 import { User, CurrentUser, SuccessResponse } from '../';
 
 // Requests
-interface GetMeRequest {}
-
 interface LogoutDeviceRequest {
   tokenId: string;
 }
@@ -45,7 +43,6 @@ interface GetProfileByIdentifierResponse extends SuccessResponse<User> {}
 
 export type {
   // Requests
-  GetMeRequest,
   LogoutDeviceRequest,
   UploadAvatarRequest,
   UpdateProfileRequest,

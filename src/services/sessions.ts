@@ -1,8 +1,8 @@
 import { apiClient } from '@/lib/api-client';
+import { GetSessionsResponse } from '@/types';
 import { handleApiError } from '@/lib/error-handler';
-import { GetSessionsRequest, GetSessionsResponse } from '@/types';
 
-const getSessions = async (_data?: GetSessionsRequest) => {
+const getSessions = async () => {
   try {
     const endpoint = '/users/sessions';
 
