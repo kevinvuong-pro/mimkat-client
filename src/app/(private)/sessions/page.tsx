@@ -23,11 +23,12 @@ import { Button } from '@/components/ui/button';
 import { getSessions } from '@/services/sessions';
 import { Separator } from '@/components/ui/separator';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { formatDate as formatLocaleDate } from '@/lib/formatters';
 import { logoutDevice, logoutAllDevices } from '@/services/users';
 
 export default function SessionsPage() {
-  const { t } = useI18n();
   const router = useRouter();
+  const { t, locale } = useI18n();
   const queryClient = useQueryClient();
 
   const [selectedSessionId, setSelectedSessionId] = useState('');
@@ -81,15 +82,7 @@ export default function SessionsPage() {
   };
 
   const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-
-    return date.toLocaleString(undefined, {
-      day: 'numeric',
-      month: 'short',
-      hour: '2-digit',
-      year: 'numeric',
-      minute: '2-digit',
-    });
+    return formatLocaleDate(dateString, locale);
   };
 
   if (isLoading) {

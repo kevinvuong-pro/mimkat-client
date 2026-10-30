@@ -53,11 +53,10 @@ export default function ProfilePage() {
     }
 
     // Validate file size based on type
-    const isGif = file.type === 'image/gif';
-    const maxSize = isGif ? 5 * 1024 * 1024 : 10 * 1024 * 1024; // 5MB for GIF, 10MB for others
+    const maxSize = 5 * 1024 * 1024; // API limit for all supported image types
 
     if (file.size > maxSize) {
-      toast.error(t.profile.maxSizeError.replace('{size}', isGif ? '5MB' : '10MB'));
+      toast.error(t.profile.maxSizeError.replace('{size}', '5MB'));
       return;
     }
 

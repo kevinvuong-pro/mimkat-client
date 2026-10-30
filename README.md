@@ -81,6 +81,7 @@ mimkat-client/
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Fix ESLint errors
 - `npm run format` - Format code with Prettier
+- `npm test` - Run Vitest tests
 
 ## 🎨 Tech Stack
 
@@ -140,6 +141,16 @@ All API calls are centralized in `src/services/`:
 ### Error Handling
 
 Centralized error handling in `src/lib/error-handler.ts`
+
+API errors use a stable response shape with `success`, `statusCode`, `error`,
+`message`, `timestamp`, and `path`. Validation failures may also include an
+`errors` array. Stack traces and internal server details are never expected in
+client responses.
+
+### Locale-aware formatting
+
+Dates and numbers are formatted through `src/lib/formatters.ts` using the
+active English or Vietnamese locale.
 
 ### Theme Support
 

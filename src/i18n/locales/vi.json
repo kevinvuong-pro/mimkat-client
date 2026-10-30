@@ -34,7 +34,7 @@
     "userNotFound": "Không tìm thấy người dùng",
     "errorLoading": "Lỗi khi tải thông tin",
     "avatarUpdated": "Cập nhật avatar thành công",
-    "fileSizeError": "Kích thước file phải nhỏ hơn 10MB",
+    "fileSizeError": "Kích thước file phải nhỏ hơn 5MB",
     "fileTypeError": "File phải là JPEG, PNG, WebP hoặc GIF",
     "maxSizeError": "Kích thước tối đa là {size}"
   },

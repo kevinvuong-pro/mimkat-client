@@ -1,7 +1,6 @@
 interface ErrorResponse {
   path: string;
   error: string;
-  stack?: string;
   success: false;
   message: string;
   timestamp: string;
