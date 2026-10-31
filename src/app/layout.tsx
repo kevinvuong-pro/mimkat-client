@@ -5,11 +5,15 @@ import { I18nProvider } from '@/context/i18n';
 import { Toaster } from '@/components/ui/sonner';
 import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
+import { PwaServiceWorker } from '@/components/pwa-service-worker';
+import { PwaInstallManager } from '@/components/pwa-install-manager';
 
 export const metadata: Metadata = {
   title: 'Mimkat',
   description: 'Mimkat Application',
-  icons: { icon: '/images/logo.png' },
+  manifest: '/manifest.webmanifest',
+  icons: { icon: '/images/logo.png', apple: '/images/icon-192.png' },
+  appleWebApp: { capable: true, title: 'Mimkat', statusBarStyle: 'default' },
 };
 
 export default function RootLayout({
@@ -30,6 +34,8 @@ export default function RootLayout({
             <I18nProvider>{children}</I18nProvider>
           </QueryProvider>
           <Toaster position="top-center" />
+          <PwaServiceWorker />
+          <PwaInstallManager />
         </ThemeProvider>
       </body>
     </html>
