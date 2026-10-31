@@ -12,7 +12,7 @@ A modern, full-featured authentication client application built with Next.js 16,
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/kevinvuong-mim/mimkat-client.git
+git clone https://github.com/kevinvuong-pro/mimkat-client.git
 cd mimkat-client
 ```
 
@@ -23,10 +23,14 @@ npm install
 ```
 
 3. Set up environment variables:
-   Create a `.env` file in the root directory and add your environment variables:
+   Copy the example file and set the URL where the API is running:
+
+```bash
+cp .env.example .env
+```
 
 ```env
-NEXT_PUBLIC_API_URL=your_api_url
+NEXT_PUBLIC_API_URL=http://localhost:3000
 ```
 
 ## 🚀 Getting Started
