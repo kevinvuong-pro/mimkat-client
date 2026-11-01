@@ -164,12 +164,6 @@ const isPwaInstalled = async (): Promise<boolean> => {
   if (typeof window === 'undefined') return false;
   if (isStandalone()) return true;
 
-  try {
-    if (window.localStorage.getItem('pwa-installed') === '1') return true;
-  } catch {
-    // Ignore storage access errors.
-  }
-
   if (typeof navigator !== 'undefined' && 'getInstalledRelatedApps' in navigator) {
     try {
       const apps = await (

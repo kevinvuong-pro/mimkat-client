@@ -7,6 +7,7 @@ import {
   isIOS,
   isAndroid,
   isWebView,
+  isStandalone,
   openInBrowser,
   isPwaInstalled,
   isMobileBrowser,
@@ -30,7 +31,7 @@ export function PwaInstallManager() {
 
     const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
 
-    if (!isMobileBrowser(userAgent)) return;
+    if (!isMobileBrowser(userAgent) || isStandalone()) return;
 
     let cancelled = false;
 
@@ -55,24 +56,12 @@ export function PwaInstallManager() {
       event.preventDefault();
       setPrompt(event as BeforeInstallPromptEvent);
 
-      let alreadyInstalled = false;
-      try {
-        alreadyInstalled = window.localStorage.getItem('pwa-installed') === '1';
-      } catch {
-        // Ignore storage access errors.
-      }
-
-      if (!isWebView(userAgent) && !alreadyInstalled) {
+      if (!isWebView(userAgent)) {
         setState('install');
       }
     };
 
     const handleAppInstalled = () => {
-      try {
-        window.localStorage.setItem('pwa-installed', '1');
-      } catch {
-        // Ignore storage access errors.
-      }
       setPrompt(null);
       setState('installed');
       setShowInstructions(false);
@@ -89,6 +78,7 @@ export function PwaInstallManager() {
   }, []);
 
   if (!isMobileBrowser(typeof navigator !== 'undefined' ? navigator.userAgent : '')) return null;
+  if (isStandalone()) return null;
 
   if (state === 'hidden') return null;
 
