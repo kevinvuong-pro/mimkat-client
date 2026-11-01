@@ -35,6 +35,34 @@ export function PwaInstallManager() {
 
     let cancelled = false;
 
+    const handleBeforeInstallPrompt = (event: Event) => {
+      event.preventDefault();
+      try {
+        window.localStorage.removeItem('pwa-installed');
+      } catch {
+        // Ignore storage access errors.
+      }
+      setPrompt(event as BeforeInstallPromptEvent);
+
+      if (!isWebView(userAgent)) {
+        setState('install');
+      }
+    };
+
+    const handleAppInstalled = () => {
+      try {
+        window.localStorage.setItem('pwa-installed', '1');
+      } catch {
+        // Ignore storage access errors.
+      }
+      setPrompt(null);
+      setState('installed');
+      setShowInstructions(false);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    window.addEventListener('appinstalled', handleAppInstalled);
+
     const initializeState = async () => {
       const installed = await isPwaInstalled();
       if (cancelled) return;
@@ -51,24 +79,6 @@ export function PwaInstallManager() {
     };
 
     void initializeState();
-
-    const handleBeforeInstallPrompt = (event: Event) => {
-      event.preventDefault();
-      setPrompt(event as BeforeInstallPromptEvent);
-
-      if (!isWebView(userAgent)) {
-        setState('install');
-      }
-    };
-
-    const handleAppInstalled = () => {
-      setPrompt(null);
-      setState('installed');
-      setShowInstructions(false);
-    };
-
-    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-    window.addEventListener('appinstalled', handleAppInstalled);
 
     return () => {
       cancelled = true;
@@ -112,7 +122,14 @@ export function PwaInstallManager() {
     try {
       await prompt.prompt();
       const choice = await prompt.userChoice;
-      if (choice.outcome === 'accepted') setState('installed');
+      if (choice.outcome === 'accepted') {
+        try {
+          window.localStorage.setItem('pwa-installed', '1');
+        } catch {
+          // Ignore storage access errors.
+        }
+        setState('installed');
+      }
     } catch {
       setShowInstructions(true);
     } finally {

@@ -160,9 +160,19 @@ const openInstalledApp = (targetUrl?: string): OpenInstalledAppResult => {
   }
 };
 
+const hasKnownInstalledPwa = (): boolean => {
+  if (typeof window === 'undefined') return false;
+  try {
+    return window.localStorage.getItem('pwa-installed') === '1';
+  } catch {
+    return false;
+  }
+};
+
 const isPwaInstalled = async (): Promise<boolean> => {
   if (typeof window === 'undefined') return false;
   if (isStandalone()) return true;
+  if (hasKnownInstalledPwa()) return true;
 
   if (typeof navigator !== 'undefined' && 'getInstalledRelatedApps' in navigator) {
     try {
@@ -189,5 +199,6 @@ export {
   isPwaInstalled,
   isMobileBrowser,
   openInstalledApp,
+  hasKnownInstalledPwa,
   type BeforeInstallPromptEvent,
 };
