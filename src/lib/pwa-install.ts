@@ -81,6 +81,11 @@ const isWebView = (userAgent?: string): boolean => {
   return false;
 };
 
+const canOpenExternalBrowser = (userAgent?: string): boolean => {
+  const ua = getUserAgent(userAgent);
+  return isWebView(ua) && isAndroid(ua);
+};
+
 const isStandalone = (): boolean => {
   if (typeof window === 'undefined') return false;
   try {
@@ -211,5 +216,6 @@ export {
   isMobileBrowser,
   openInstalledApp,
   hasKnownInstalledPwa,
+  canOpenExternalBrowser,
   type BeforeInstallPromptEvent,
 };

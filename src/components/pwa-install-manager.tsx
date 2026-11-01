@@ -12,6 +12,7 @@ import {
   isPwaInstalled,
   isMobileBrowser,
   openInstalledApp,
+  canOpenExternalBrowser,
   type BeforeInstallPromptEvent,
 } from '@/lib/pwa-install';
 import { Button } from '@/components/ui/button';
@@ -71,7 +72,7 @@ export function PwaInstallManager() {
         return;
       }
 
-      if (isWebView(userAgent)) {
+      if (canOpenExternalBrowser(userAgent)) {
         setState('browser');
       } else if (isMobileBrowser(userAgent)) {
         setState(isIOS(userAgent) ? 'ios' : 'install');
