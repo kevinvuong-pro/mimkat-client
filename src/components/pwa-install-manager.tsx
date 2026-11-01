@@ -107,7 +107,7 @@ export function PwaInstallManager() {
           if (document.visibilityState === 'visible' && document.hasFocus()) {
             setShowInstructions(true);
           }
-        }, 1500);
+        }, 700);
       }
       return;
     }
