@@ -101,6 +101,11 @@ export function PwaInstallManager() {
     if (isBrowserAction) {
       const result = openInBrowser();
       if (result === 'instructions') setShowInstructions(true);
+      else {
+        window.setTimeout(() => {
+          if (document.visibilityState === 'visible') setShowInstructions(true);
+        }, 700);
+      }
       return;
     }
 

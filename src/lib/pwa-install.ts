@@ -113,11 +113,16 @@ const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
         `#Intent;scheme=${parsed.protocol.replace(':', '')};` +
         'action=android.intent.action.VIEW;' +
         `S.browser_fallback_url=${encodeURIComponent(url)};end`;
-      window.location.href = intentUrl;
+      const link = document.createElement('a');
+      link.href = intentUrl;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
       return 'intent';
     } catch {
-      window.location.href = url;
-      return 'intent';
+      // Fall through to the regular browser URL.
     }
   }
 
@@ -125,7 +130,13 @@ const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
     try {
       const parsed = new URL(url, window.location.href);
       const scheme = parsed.protocol === 'https:' ? 'x-safari-https' : 'x-safari-http';
-      window.location.href = `${scheme}://${parsed.host}${parsed.pathname}${parsed.search}${parsed.hash}`;
+      const link = document.createElement('a');
+      link.href = `${scheme}://${parsed.host}${parsed.pathname}${parsed.search}${parsed.hash}`;
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
       return 'intent';
     } catch {
       // Fall through to best-effort window.open.
