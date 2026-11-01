@@ -6,7 +6,6 @@ import { Toaster } from '@/components/ui/sonner';
 import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { PwaServiceWorker } from '@/components/pwa-service-worker';
-import { PwaInstallManager } from '@/components/pwa-install-manager';
 
 export const metadata: Metadata = {
   title: 'Mimkat',
@@ -35,7 +34,6 @@ export default function RootLayout({
           </QueryProvider>
           <Toaster position="top-center" />
           <PwaServiceWorker />
-          <PwaInstallManager />
         </ThemeProvider>
       </body>
     </html>

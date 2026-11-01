@@ -98,6 +98,7 @@ const isStandalone = (): boolean => {
 };
 
 export type OpenInBrowserResult = 'intent' | 'instructions';
+export type OpenInstalledAppResult = 'opened' | 'instructions';
 
 const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
   if (typeof window === 'undefined') return 'instructions';
@@ -140,7 +141,24 @@ const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
   return 'instructions';
 };
 
-const isInstalled = (): boolean => isStandalone();
+const openInstalledApp = (targetUrl?: string): OpenInstalledAppResult => {
+  if (typeof window === 'undefined') return 'instructions';
+
+  const url = targetUrl || window.location.origin;
+  try {
+    const opened = window.open(url, '_blank', 'noopener,noreferrer');
+    if (opened) return 'opened';
+  } catch {
+    // Fall through to the current tab.
+  }
+
+  try {
+    window.location.assign(url);
+    return 'opened';
+  } catch {
+    return 'instructions';
+  }
+};
 
 const isPwaInstalled = async (): Promise<boolean> => {
   if (typeof window === 'undefined') return false;
@@ -173,9 +191,9 @@ export {
   isAndroid,
   isWebView,
   isStandalone,
-  isInstalled,
-  isPwaInstalled,
   openInBrowser,
+  isPwaInstalled,
   isMobileBrowser,
+  openInstalledApp,
   type BeforeInstallPromptEvent,
 };

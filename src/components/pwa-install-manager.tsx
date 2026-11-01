@@ -7,15 +7,15 @@ import {
   isIOS,
   isAndroid,
   isWebView,
-  isInstalled,
   openInBrowser,
   isPwaInstalled,
   isMobileBrowser,
+  openInstalledApp,
   type BeforeInstallPromptEvent,
 } from '@/lib/pwa-install';
 import { Button } from '@/components/ui/button';
 
-type ManagerState = 'ios' | 'hidden' | 'browser' | 'install';
+type ManagerState = 'ios' | 'hidden' | 'browser' | 'install' | 'installed';
 
 export function PwaInstallManager() {
   const [isVi, setIsVi] = useState(false);
@@ -32,22 +32,13 @@ export function PwaInstallManager() {
 
     if (!isMobileBrowser(userAgent)) return;
 
-    if (isInstalled()) {
-      try {
-        window.localStorage.setItem('pwa-installed', '1');
-      } catch {
-        // Ignore storage access errors.
-      }
-      return;
-    }
-
     let cancelled = false;
 
     const initializeState = async () => {
       const installed = await isPwaInstalled();
       if (cancelled) return;
       if (installed) {
-        setState('hidden');
+        setState('installed');
         return;
       }
 
@@ -71,7 +62,7 @@ export function PwaInstallManager() {
         // Ignore storage access errors.
       }
 
-      if (!isWebView(userAgent) && !isInstalled() && !alreadyInstalled) {
+      if (!isWebView(userAgent) && !alreadyInstalled) {
         setState('install');
       }
     };
@@ -83,7 +74,7 @@ export function PwaInstallManager() {
         // Ignore storage access errors.
       }
       setPrompt(null);
-      setState('hidden');
+      setState('installed');
       setShowInstructions(false);
     };
 
@@ -102,6 +93,11 @@ export function PwaInstallManager() {
   if (state === 'hidden') return null;
 
   const handleAction = async () => {
+    if (state === 'installed') {
+      if (openInstalledApp() === 'instructions') setShowInstructions(true);
+      return;
+    }
+
     if (isBrowserAction) {
       const result = openInBrowser();
       if (result === 'instructions') setShowInstructions(true);
@@ -126,7 +122,7 @@ export function PwaInstallManager() {
     try {
       await prompt.prompt();
       const choice = await prompt.userChoice;
-      if (choice.outcome === 'accepted') setState('hidden');
+      if (choice.outcome === 'accepted') setState('installed');
     } catch {
       setShowInstructions(true);
     } finally {
@@ -138,12 +134,14 @@ export function PwaInstallManager() {
   const labels = isViLang
     ? {
         installTitle: 'Cài đặt ứng dụng',
+        openTitle: 'Mở ứng dụng',
         browserTitle: 'Mở bằng trình duyệt',
         close: 'Đóng',
         howTo: 'Cách tiếp tục',
       }
     : {
         installTitle: 'Install App',
+        openTitle: 'Open App',
         browserTitle: 'Open in Browser',
         close: 'Close',
         howTo: 'How to continue',
@@ -167,14 +165,18 @@ export function PwaInstallManager() {
         : 'Open the browser menu (⋮) and choose "Install app" or "Add to Home screen".';
 
   return (
-    <aside className="fixed bottom-4 left-1/2 z-50 flex w-fit max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-3 rounded-xl border bg-background p-3 shadow-lg">
+    <aside className="fixed bottom-4 left-1/2 z-50 flex w-fit max-w-[calc(100vw-2rem)] -translate-x-1/2 items-center gap-3 rounded-xl border bg-background p-3 text-foreground shadow-lg">
       {isBrowserAction ? (
         <ExternalLink className="mx-2 size-5 shrink-0" />
       ) : (
         <Download className="mx-2 size-5 shrink-0" />
       )}
       <Button size="sm" onClick={handleAction}>
-        {isBrowserAction ? labels.browserTitle : labels.installTitle}
+        {state === 'installed'
+          ? labels.openTitle
+          : isBrowserAction
+            ? labels.browserTitle
+            : labels.installTitle}
       </Button>
       <Button
         aria-label={labels.close}

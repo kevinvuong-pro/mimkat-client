@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 import { getAccessToken } from '@/lib/auth-token-storage';
+import { PwaInstallManager } from '@/components/pwa-install-manager';
 
 const highlights = [
   ['Tài khoản của bạn', 'Quản lý hồ sơ và thông tin cá nhân dễ dàng.'],
@@ -84,6 +85,7 @@ export default function Home() {
           ))}
         </section>
       </div>
+      <PwaInstallManager />
     </main>
   );
 }
