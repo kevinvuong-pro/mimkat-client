@@ -185,7 +185,7 @@ export function PwaInstallManager() {
         <X />
       </Button>
       {showInstructions && (
-        <div className="absolute inset-x-0 bottom-full mb-2 rounded-xl border bg-background p-4 text-sm shadow-lg">
+        <div className="absolute bottom-full left-1/2 mb-2 w-[400px] max-w-[calc(100vw-2rem)] -translate-x-1/2 rounded-xl border bg-background p-4 text-sm shadow-lg">
           <p className="font-semibold">{labels.howTo}</p>
           <p className="mt-2">{instructions}</p>
           <Button className="mt-3" size="sm" onClick={() => setShowInstructions(false)}>
