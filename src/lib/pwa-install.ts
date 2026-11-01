@@ -115,7 +115,7 @@ const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
         `S.browser_fallback_url=${encodeURIComponent(url)};end`;
       const link = document.createElement('a');
       link.href = intentUrl;
-      link.target = '_blank';
+      link.target = '_self';
       link.rel = 'noopener noreferrer';
       document.body.appendChild(link);
       link.click();
@@ -132,7 +132,7 @@ const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
       const scheme = parsed.protocol === 'https:' ? 'x-safari-https' : 'x-safari-http';
       const link = document.createElement('a');
       link.href = `${scheme}://${parsed.host}${parsed.pathname}${parsed.search}${parsed.hash}`;
-      link.target = '_blank';
+      link.target = '_self';
       link.rel = 'noopener noreferrer';
       document.body.appendChild(link);
       link.click();

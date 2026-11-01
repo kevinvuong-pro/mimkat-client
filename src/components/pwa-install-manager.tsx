@@ -103,8 +103,10 @@ export function PwaInstallManager() {
       if (result === 'instructions') setShowInstructions(true);
       else {
         window.setTimeout(() => {
-          if (document.visibilityState === 'visible') setShowInstructions(true);
-        }, 700);
+          if (document.visibilityState === 'visible' && document.hasFocus()) {
+            setShowInstructions(true);
+          }
+        }, 1500);
       }
       return;
     }
