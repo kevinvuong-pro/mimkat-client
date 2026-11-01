@@ -81,11 +81,6 @@ const isWebView = (userAgent?: string): boolean => {
   return false;
 };
 
-const canOpenExternalBrowser = (userAgent?: string): boolean => {
-  const ua = getUserAgent(userAgent);
-  return isWebView(ua) && isAndroid(ua);
-};
-
 const isStandalone = (): boolean => {
   if (typeof window === 'undefined') return false;
   try {
@@ -120,7 +115,7 @@ const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
         `S.browser_fallback_url=${encodeURIComponent(url)};end`;
       const link = document.createElement('a');
       link.href = intentUrl;
-      link.target = '_self';
+      link.target = '_blank';
       link.rel = 'noopener noreferrer';
       document.body.appendChild(link);
       link.click();
@@ -137,7 +132,7 @@ const openInBrowser = (targetUrl?: string): OpenInBrowserResult => {
       const scheme = parsed.protocol === 'https:' ? 'x-safari-https' : 'x-safari-http';
       const link = document.createElement('a');
       link.href = `${scheme}://${parsed.host}${parsed.pathname}${parsed.search}${parsed.hash}`;
-      link.target = '_self';
+      link.target = '_blank';
       link.rel = 'noopener noreferrer';
       document.body.appendChild(link);
       link.click();
@@ -216,6 +211,5 @@ export {
   isMobileBrowser,
   openInstalledApp,
   hasKnownInstalledPwa,
-  canOpenExternalBrowser,
   type BeforeInstallPromptEvent,
 };

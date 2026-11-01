@@ -12,7 +12,6 @@ import {
   isPwaInstalled,
   isMobileBrowser,
   openInstalledApp,
-  canOpenExternalBrowser,
   type BeforeInstallPromptEvent,
 } from '@/lib/pwa-install';
 import { Button } from '@/components/ui/button';
@@ -72,7 +71,7 @@ export function PwaInstallManager() {
         return;
       }
 
-      if (canOpenExternalBrowser(userAgent)) {
+      if (isWebView(userAgent)) {
         setState('browser');
       } else if (isMobileBrowser(userAgent)) {
         setState(isIOS(userAgent) ? 'ios' : 'install');
@@ -104,10 +103,8 @@ export function PwaInstallManager() {
       if (result === 'instructions') setShowInstructions(true);
       else {
         window.setTimeout(() => {
-          if (document.visibilityState === 'visible' && document.hasFocus()) {
-            setShowInstructions(true);
-          }
-        }, 700);
+          if (document.visibilityState === 'visible') setShowInstructions(true);
+        }, 500);
       }
       return;
     }
