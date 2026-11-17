@@ -229,7 +229,7 @@ export default function ChangePasswordPage() {
 
         <div className="border-t pt-4">
           <Button asChild variant="outline" className="w-full">
-            <Link href="/">{t.changePassword.backToHome}</Link>
+            <Link href="/home">{t.changePassword.backToHome}</Link>
           </Button>
         </div>
       </div>

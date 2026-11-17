@@ -191,7 +191,7 @@ export default function SessionsPage() {
 
           <div className="border-t pt-4">
             <Button asChild variant="outline" className="w-full">
-              <Link href="/">{t.sessions.backToHome}</Link>
+              <Link href="/home">{t.sessions.backToHome}</Link>
             </Button>
           </div>
         </div>

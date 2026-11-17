@@ -85,7 +85,7 @@ export default function ProfilePage() {
           </div>
           <div className="space-y-3 border-t pt-4">
             <Button asChild variant="outline" className="w-full">
-              <Link href="/">{t.profile.backToHome}</Link>
+              <Link href="/home">{t.profile.backToHome}</Link>
             </Button>
           </div>
         </div>
@@ -189,14 +189,14 @@ export default function ProfilePage() {
                 {t.profile.editProfile}
               </Button>
               <Button asChild variant="outline" className="w-full">
-                <Link href="/">{t.profile.backToHome}</Link>
+                <Link href="/home">{t.profile.backToHome}</Link>
               </Button>
             </div>
           </>
         ) : (
           <div className="space-y-3 border-t pt-4">
             <Button asChild variant="outline" className="w-full">
-              <Link href="/">{t.profile.backToHome}</Link>
+              <Link href="/home">{t.profile.backToHome}</Link>
             </Button>
           </div>
         )}
