@@ -28,7 +28,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   const [locale, setLocaleState] = useState<Locale>('en');
 
   useEffect(() => {
-    setLocaleState(getInitialLocale());
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setLocaleState(getInitialLocale()); // Locale is initialized from browser storage after hydration to avoid server/client mismatches.
     setIsReady(true);
   }, []);
 

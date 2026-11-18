@@ -19,7 +19,8 @@ export default function PublicLayout({
       return;
     }
 
-    setIsCheckingAuth(false);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsCheckingAuth(false); // Auth is stored in browser-only storage, so this effect completes client initialization.
   }, [router]);
 
   if (isCheckingAuth) return null;

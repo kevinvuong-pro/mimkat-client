@@ -19,16 +19,15 @@ import { Button } from '@/components/ui/button';
 type ManagerState = 'ios' | 'hidden' | 'browser' | 'install' | 'installed';
 
 export function PwaInstallManager() {
-  const [isVi, setIsVi] = useState(false);
   const [state, setState] = useState<ManagerState>('hidden');
   const [showInstructions, setShowInstructions] = useState(false);
   const [prompt, setPrompt] = useState<BeforeInstallPromptEvent | null>(null);
 
   const isBrowserAction = state === 'browser';
+  const isVi =
+    typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('vi');
 
   useEffect(() => {
-    setIsVi(typeof navigator !== 'undefined' && navigator.language.toLowerCase().startsWith('vi'));
-
     const userAgent = typeof navigator !== 'undefined' ? navigator.userAgent : '';
 
     if (!isMobileBrowser(userAgent) || isStandalone()) return;

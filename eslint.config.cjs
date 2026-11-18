@@ -1,9 +1,7 @@
-const { FlatCompat } = require('@eslint/eslintrc');
-
-const compat = new FlatCompat({ baseDirectory: __dirname });
-
 module.exports = [
-  ...compat.extends('next/core-web-vitals', 'prettier'),
+  ...require('eslint-config-next/core-web-vitals'),
+
+  require('eslint-config-prettier/flat'),
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     settings: { react: { version: 'detect' } },
@@ -20,6 +18,7 @@ module.exports = [
       'prettier/prettier': 'error',
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@next/next/no-location-assign-relative-destination': 'off',
     },
   },
 ];
