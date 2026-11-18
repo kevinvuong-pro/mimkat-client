@@ -2,10 +2,10 @@
 
 import Link from 'next/link';
 import { toast } from 'sonner';
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useRef, useState, useEffect } from 'react';
 import { LogOut, Tablet, Loader2, Monitor, Smartphone } from 'lucide-react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 
 import {
   AlertDialog,
@@ -31,13 +31,43 @@ export default function SessionsPage() {
   const { t, locale } = useI18n();
   const queryClient = useQueryClient();
 
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
   const [selectedSessionId, setSelectedSessionId] = useState('');
   const [issDialogOpen, setIsDialogOpen] = useState({ all: false, single: false });
 
-  const { data, isLoading } = useQuery({
-    queryFn: getSessions,
+  const { data, isLoading, hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryFn: ({ pageParam }) => getSessions({ limit: 10, page: pageParam }),
+    getNextPageParam: (lastPage) =>
+      lastPage.meta.hasNextPage ? lastPage.meta.page + 1 : undefined,
     queryKey: ['getSessions'],
+    initialPageParam: 1,
   });
+
+  const totalSessions = data?.pages[0]?.meta.total ?? 0;
+  const sessions = data?.pages.flatMap((page) => page.items) ?? [];
+
+  useEffect(() => {
+    const viewport = scrollAreaRef.current?.querySelector<HTMLElement>(
+      '[data-radix-scroll-area-viewport]',
+    );
+    const loadMore = loadMoreRef.current;
+
+    if (!viewport || !loadMore || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isFetchingNextPage) {
+          void fetchNextPage();
+        }
+      },
+      { root: viewport, rootMargin: '0px 0px 120px 0px' },
+    );
+
+    observer.observe(loadMore);
+
+    return () => observer.disconnect();
+  }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   const { mutate: logoutDeviceMutation, isPending: isLogoutDevicePending } = useMutation({
     onError: (error) => toast.error(error.message),
@@ -98,22 +128,22 @@ export default function SessionsPage() {
             <p className="text-sm text-muted-foreground">{t.sessions.description}</p>
           </div>
 
-          {(data?.meta.total ?? 0) > 1 && (
+          {totalSessions > 1 && (
             <div className="flex justify-end border-b pb-4">
               <Button
                 variant="destructive"
                 onClick={() => setIsDialogOpen((prev) => ({ ...prev, all: true }))}
               >
                 <LogOut className="mr-2 h-4 w-4" />
-                {t.sessions.logoutAllOthers.replace('{count}', (data?.meta.total ?? 0).toString())}
+                {t.sessions.logoutAllOthers.replace('{count}', totalSessions.toString())}
               </Button>
             </div>
           )}
 
           <div className="space-y-3">
-            <ScrollArea className="h-[432px] w-full">
+            <ScrollArea ref={scrollAreaRef} className="h-[432px] w-full">
               <div className="pr-4">
-                {data?.items.map((session: Session, index: number) => (
+                {sessions.map((session: Session, index: number) => (
                   <div key={session.id}>
                     <div
                       className={`rounded-lg p-3 transition-colors ${
@@ -182,9 +212,12 @@ export default function SessionsPage() {
                         )}
                       </div>
                     </div>
-                    {index < (data?.items.length ?? 0) - 1 && <Separator className="my-3" />}
+                    {index < sessions.length - 1 && <Separator className="my-3" />}
                   </div>
                 ))}
+                <div ref={loadMoreRef} className="flex h-8 items-center justify-center">
+                  {isFetchingNextPage && <Loader2 className="h-5 w-5 animate-spin text-primary" />}
+                </div>
               </div>
             </ScrollArea>
           </div>
