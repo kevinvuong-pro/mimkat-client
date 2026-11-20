@@ -19,7 +19,7 @@ export default function GoogleAuthCallbackPage() {
     }
 
     setTokens(accessToken, refreshToken);
-    window.location.replace('/');
+    window.location.replace('/home');
   }, []);
 
   return null;
